@@ -3,8 +3,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class MyHTTPClient {
+public class client {
     public static void main(String[] args) {
+
+        System.out.println("HTTP Client");
+
         String server = "example.com";
         int port = 80;
         
