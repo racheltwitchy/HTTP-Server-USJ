@@ -5,27 +5,54 @@ import java.net.Socket;
 
 public class client {
     public static void main(String[] args) {
+        // Change the server to a server wanted by the user
+        System.out.println("Type the server you want to connect to: ");
+        String server = System.console().readLine();
+        int port = 3000;
+        String method="";
+        String body = "";
+        do{
+            do{
+                System.out.println("Type the HTTP method you want to use (GET, HEAD, PUT, POST and DELETE): ");
+                method = System.console().readLine();
+            }while(!method.equals("GET") && !method.equals("HEAD") && !method.equals("PUT") && !method.equals("POST") && !method.equals("DELETE"));
+            
 
-        String server = "example.com";
-        int port = 80;
+            if(method.equals("GET") || method.equals("HEAD")){
+                System.out.println("Type the body you want to add: ");
+                body = System.console().readLine();
+                System.out.println("COntenido de el body " + body);
+            }
+            if(method.equals("PUT") || method.equals("DELETE")){
+                System.out.println("Type the file you want to add (String): ");
+                body = System.console().readLine();
+                System.out.println("COntenido de el body " + body);
+            }
+            if(method.equals("POST")){
+                System.out.println("Type two integers separado by a space to sum: ");
+                body = System.console().readLine();
+            }
 
-        String request = "GET / HTTP/1.1\r\n"
-                + "Host: " + server + "\r\n"
-                + "Connection: close\r\n"
-                + "\r\n";
-
-        try (Socket socket = new Socket(server, port);
+            
+            String request = method + " / HTTP/1.1\r\n"
+                        + "Host: " + server + "\r\n"
+                        + "Connection: close\r\n" + body+ "\r\n";
+            
+            try (Socket socket = new Socket("localhost", port);
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-
-            out.println(request);
-
-            String line;
-            while ((line = in.readLine()) != null) {
-                System.out.println(line);
+                
+                out.println(request);
+                //System.out.println("Request sent to the server/n " + request);
+                
+                String line;
+                while ((line = in.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        }while(!method.equals("EXIT"));
     }
 }
+
