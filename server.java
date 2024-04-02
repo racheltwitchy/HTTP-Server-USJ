@@ -39,39 +39,47 @@ public class server {
                     String body=request.split("\r\n")[request.split("\r\n").length-1];
                     if(method.equals("GET")){
                         response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" +
-                                      "Echoing back your request body:\r\n" + body;
-                    
-                        
+                        "Echoing back your request body(GET):\r\n" 
+                        + "Content-Length: "+ body.getBytes().length +" \r\n"
+                        + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
+                        + messages.toString()
+                        + "\r\n";
                     }
                     if(method.equals("HEAD")){
-                        response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n";
+                        response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n"
+                        + "Date: "+ java.time.LocalDateTime.now() + "\r\n";
                        
                     }
                     if(method.equals("PUT")){
                         if(!messages.contains(body)){
                             messages.add(body);
-                            response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" +
-                                      "Added file: " + body ;
+                            response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n"
+                            + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
+                            + "Added file: " + body ;
                         }else{
-                            response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" +
-                                      "The file already exists";
+                            response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n"
+                            + "Date: "+ java.time.LocalDateTime.now() + "\r\n" 
+                            + "The file already exists";
                         }
                     }
                     if(method.equals("POST")){
                         String[] numbers = body.split(" ");
                         int sum = Integer.parseInt(numbers[0]) + Integer.parseInt(numbers[1]);
-                        response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" +
-                                      "Sum: " + sum;
+                        response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" 
+                        + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
+                        + "Sum: " + sum;
                         
                     }
                     if(method.equals("DELETE")){
                         if(messages.contains(body)){
                             messages.remove(body);
-                            response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" +
-                                      "Deleted file: " + body;
+                            response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" 
+                            + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
+                            + "Deleted file: " + body;
                         }else{
-                            response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" +
-                                      "The file does not exist";
+                            response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" 
+                            + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
+                            + "The file does not exist";
                         }
                     }
                     writer.print(response);
