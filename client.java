@@ -38,7 +38,7 @@ public class client {
                         + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
                         + body+ "\r\n";
             
-            try (Socket socket = new Socket("localhost", port);
+            try (Socket socket = new Socket(server, port);
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
                 
