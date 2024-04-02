@@ -13,30 +13,30 @@ public class client {
         String body = "";
         do{
             do{
-                System.out.println("Type the HTTP method you want to use (GET, HEAD, PUT, POST and DELETE): ");
+                System.out.println("Type the HTTP method you want to use (GET, HEAD, PUT, POST, DELETE or EXIT): ");
                 method = System.console().readLine();
-            }while(!method.equals("GET") && !method.equals("HEAD") && !method.equals("PUT") && !method.equals("POST") && !method.equals("DELETE"));
+            }while(!method.equals("GET") && !method.equals("HEAD") && !method.equals("PUT") && !method.equals("POST") && !method.equals("DELETE") && !method.equals("EXIT"));
             
 
             if(method.equals("GET") || method.equals("HEAD")){
                 System.out.println("Type the body you want to add: ");
                 body = System.console().readLine();
-                System.out.println("COntenido de el body " + body);
             }
             if(method.equals("PUT") || method.equals("DELETE")){
                 System.out.println("Type the file you want to add (String): ");
                 body = System.console().readLine();
-                System.out.println("COntenido de el body " + body);
             }
             if(method.equals("POST")){
                 System.out.println("Type two integers separado by a space to sum: ");
                 body = System.console().readLine();
             }
-
             
             String request = method + " / HTTP/1.1\r\n"
                         + "Host: " + server + "\r\n"
-                        + "Connection: close\r\n" + body+ "\r\n";
+                        + "Connection: close\r\n" 
+                        + "Content-Length: "+ body.getBytes().length +" \r\n"
+                        + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
+                        + body+ "\r\n";
             
             try (Socket socket = new Socket("localhost", port);
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
