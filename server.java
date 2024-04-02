@@ -42,7 +42,7 @@ public class server {
                         "Echoing back your request body(GET):\r\n" 
                         + "Content-Length: "+ body.getBytes().length +" \r\n"
                         + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
-                        + messages.toString()
+                        + body
                         + "\r\n";
                     }
                     if(method.equals("HEAD")){
