@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Server {
 
     public static void main(String[] args) {
-        ArrayList<Car> coches = new ArrayList<Car>();
+        ArrayList<Car> cars = new ArrayList<Car>();
         String response = "";
 
         System.out.println("Type the port you want: ");
@@ -42,7 +42,7 @@ public class Server {
                         "Echoing back your request body(GET):\r\n" 
                         + "Content-Length: "+ body.getBytes().length +" \r\n"
                         + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
-                        + coches.toString()
+                        + cars.toString() 
                         + "\r\n";
                     }
                     if(method.equals("HEAD")){
@@ -53,8 +53,8 @@ public class Server {
                         String[] parts = body.split(" ");
                         Car temp=new Car(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]));
                         
-                        if(!coches.contains(temp)){
-                            coches.add(temp);
+                        if(!cars.contains(temp)){
+                            cars.add(temp);
                             response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n"
                             + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
                             + "Added car: " + temp.toString() ;
@@ -69,7 +69,7 @@ public class Server {
                         double min=Double.min(Double.parseDouble(numbers[0]),Double.parseDouble(numbers[1]));
                         double max=Double.max(Double.parseDouble(numbers[0]),Double.parseDouble(numbers[1]));
                         ArrayList<Car> temp = new ArrayList<Car>();
-                        for(Car c: coches){
+                        for(Car c: cars){
                             if(c.price>=min && c.price<=max){
                                 temp.add(c);
                             }
@@ -80,17 +80,22 @@ public class Server {
                         + temp.toString();
                     }
                     if(method.equals("DELETE")){
-                        String[] parts = body.split(" ");
-                        Car temp=new Car(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]));
-                        if(coches.contains(temp)){
-                            coches.remove(temp);
-                            response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" 
-                            + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
-                            + "Deleted car: " + temp.toString();
-                        }else{
-                            response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" 
-                            + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
-                            + "The car does not exist";
+                        try {
+                            int index = Integer.parseInt(body); // Asumiendo que body contiene un número de índice válido.
+                            if (index >= 0 && index < cars.size()) {
+                                Car temp = cars.remove(index); // Elimina y devuelve el coche en el índice especificado.
+                                response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" 
+                                    + "Date: " + java.time.LocalDateTime.now() + "\r\n"
+                                    + "Deleted car: " + temp.toString();
+                            } else {
+                                response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" 
+                                    + "Date: " + java.time.LocalDateTime.now() + "\r\n"
+                                    + "The car index is out of bounds";
+                            }
+                        } catch (NumberFormatException e) {
+                            response = "HTTP/1.1 400 Bad Request\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" 
+                                + "Date: " + java.time.LocalDateTime.now() + "\r\n"
+                                + "Invalid index format";
                         }
                     }
                     writer.print(response); 
@@ -102,3 +107,5 @@ public class Server {
         }
     }
 }
+
+
