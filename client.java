@@ -28,7 +28,7 @@ public class Client {
                     body = System.console().readLine();
                 }
                 if(method.equals("DELETE")){
-                    System.out.println("Type the car you want to delete (Brand Model HorsePower Price) just leave space between each characteristic: ");
+                    System.out.println("Type the index of the car you want to delete: ");
                     body = System.console().readLine();
                 }
             }
