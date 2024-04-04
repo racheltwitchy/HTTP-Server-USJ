@@ -22,15 +22,6 @@ public class Car{
                this.price == other.price;
     }
 
-    @Override
-    public int hashCode() {
-        int result = brand != null ? brand.hashCode() : 0;
-        result = 31 * result + (model != null ? model.hashCode() : 0);
-        result = 31 * result + horsePower;
-        result = 31 * result + price;
-        return result;
-    }
-
     public String toString(){
         return " Brand: " + brand + " Model: " + model + " Horse Power: " + horsePower + " Price: " + price ;      
     }
