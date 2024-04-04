@@ -32,6 +32,6 @@ public class Car{
     }
 
     public String toString(){
-        return " Brand: " + brand + " Model: " + model + " Horse Power: " + horsePower + " Price: " + price +"\r\n";      
+        return " Brand: " + brand + " Model: " + model + " Horse Power: " + horsePower + " Price: " + price ;      
     }
 }
