@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
-
+       
     public static void main(String[] args) {
         ArrayList<Car> cars = new ArrayList<Car>();
         String response = "";
@@ -42,7 +42,7 @@ public class Server {
                         "Echoing back your request body(GET):\r\n" 
                         + "Content-Length: "+ body.getBytes().length +" \r\n"
                         + "Date: "+ java.time.LocalDateTime.now() + "\r\n"
-                        + cars.toString() 
+                        + Server.carsToString(cars) 
                         + "\r\n";
                     }
                     if(method.equals("HEAD")){
@@ -50,8 +50,8 @@ public class Server {
                         + "Date: "+ java.time.LocalDateTime.now() + "\r\n";
                     }
                     if(method.equals("PUT")){
-                        String[] parts = body.split(" ");
-                        Car temp=new Car(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]));
+                        String[] parts = body.split(",");
+                        Car temp=new Car(parts[0], parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
                         
                         if(!cars.contains(temp)){
                             cars.add(temp);
@@ -82,8 +82,8 @@ public class Server {
                     if(method.equals("DELETE")){
                         try {
                             int index = Integer.parseInt(body); // Asumiendo que body contiene un número de índice válido.
-                            if (index >= 0 && index < cars.size()) {
-                                Car temp = cars.remove(index); // Elimina y devuelve el coche en el índice especificado.
+                            if (index >= 1 && index <= cars.size()) {
+                                Car temp = cars.remove(index-1); // Elimina y devuelve el coche en el índice especificado.
                                 response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n" 
                                     + "Date: " + java.time.LocalDateTime.now() + "\r\n"
                                     + "Deleted car: " + temp.toString();
@@ -105,6 +105,15 @@ public class Server {
             System.out.println("Server exception: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+    //Method to convert the cars arraylist to a string and have an index for each car
+    public static String carsToString(ArrayList<Car> cars){
+
+        String res="";
+        for (int i=1;i<=cars.size();i++){
+            res+="Car: " + i + cars.get(i-1).toString()+"\n";
+        }
+        return res;
     }
 }
 
