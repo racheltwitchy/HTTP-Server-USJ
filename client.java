@@ -8,6 +8,7 @@ public class Client {
         // Change the server to a server wanted by the user
         System.out.println("Type the server you want to connect to: ");
         String server = System.console().readLine();
+
         System.out.println("Type the port you want to connect to: ");
         String port = System.console().readLine();
         String method = "";
@@ -43,7 +44,7 @@ public class Client {
                     + "Host: " + server + "\r\n"
                     + "Connection: close\r\n"
                     + "Content-Length: " + body.getBytes().length + " \r\n"
-                    + "Date: " + java.time.LocalDateTime.now() + "\r\n"
+                    + "Date: " + java.time.LocalDateTime.now() + "\r\n\r\n"
                     + body + "\r\n";
 
             try (Socket socket = new Socket(server, Integer.parseInt(port));
@@ -51,7 +52,7 @@ public class Client {
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
                 out.println(request);
-                System.out.println("Request sent to the server\n " + request);
+                System.out.println("Request sent to the server\n" + request);
 
                 String line;
                 while ((line = in.readLine()) != null) {
