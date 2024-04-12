@@ -1,0 +1,7 @@
+target/
+!**/src/main/resources/**
+*.log
+*.class
+.DS_Store
+.idea/
+*.iml
