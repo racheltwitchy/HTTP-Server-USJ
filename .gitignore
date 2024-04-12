@@ -1,3 +1,4 @@
+#Avoid unwanted files (build files) being added to the respository
 target/
 !**/src/main/resources/**
 *.log
