@@ -1,6 +1,0 @@
-As in Git we cannot create an empty directory directly. 
-We have to create the folder ".gitkeep" to add 
-a directory with no more files except of this one.
-
-NOTE: ".gitkeep" is not a Git caracteristic but
-its a convention recognized by the community.
